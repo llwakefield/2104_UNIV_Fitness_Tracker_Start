@@ -18,10 +18,10 @@ describe('Database', () => {
   afterAll(async() => {
     await client.end();
   })
-  describe('Users', () => {
+  describe.only('Users', () => {
     let userToCreateAndUpdate, queriedUser;
     let userCredentials = {username: 'billybob', password: 'bobbybadboy'};
-    describe('createUser({ username, password })', () => {
+    describe.only('createUser({ username, password })', () => {
       beforeAll(async () => {
         userToCreateAndUpdate = await createUser(userCredentials);
         const {rows} = await client.query(`SELECT * FROM users WHERE username = $1`, [userCredentials.username]);
