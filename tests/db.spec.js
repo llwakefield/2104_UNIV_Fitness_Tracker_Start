@@ -83,7 +83,7 @@ describe('Database', () => {
         expect(createdActivity.description).toBe(activityToCreate.description);
       })
     })
-    describe('updateActivity', () => {
+    describe.only('updateActivity', () => {
       it('Updates name and description of an activity without affecting the ID. Returns the updated Activity.', async () => {
         const [activityToUpdate] = await getAllActivities();
         activityToUpdate.name = 'standing barbell curl';

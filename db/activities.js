@@ -42,8 +42,25 @@ async function createActivity ({name, description}){
     }
 }
 
+async function updateActivity({id, name, description}) {
+    const lowerCaseName = name.toLowerCase();
+    try {
+        const {rows: [activity] } = await client.query(`
+            UPDATE activities
+            SET name=$2, description=$3
+            WHERE id=$1
+            RETURNING *;
+        `, [id, lowerCaseName, description]);
+        return activity;
+
+    } catch(error){
+        throw(error);
+    }
+}
+
 module.exports = {
     getActivityById,
     getAllActivities,
     createActivity,
+    updateActivity,
 }
