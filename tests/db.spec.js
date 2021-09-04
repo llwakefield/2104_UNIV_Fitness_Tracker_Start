@@ -297,7 +297,7 @@ describe('Database', () => {
       })
     })
   })
-  describe('Routine Activities', () => {
+  describe.only('Routine Activities', () => {
     const routineActivityData = {
       routineId: 4,
       activityId: 8,
@@ -305,7 +305,7 @@ describe('Database', () => {
       duration: 10000 
     }
     let routineActivityToCreateAndUpdate;
-    describe('addActivityToRoutine({ routineId, activityId, count, duration })', () => {
+    describe.only('addActivityToRoutine({ routineId, activityId, count, duration })', () => {
       it('creates a new routine_activity, and return it', async () => {
         routineActivityToCreateAndUpdate = await addActivityToRoutine(routineActivityData);
         
