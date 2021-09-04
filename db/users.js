@@ -22,7 +22,7 @@ async function getUser({username, password}){
         const { rows: [user] } = await client.query(`
             SELECT *
             FROM users
-            WHERE username=$1 and password=$2
+            WHERE username=$1 and password=$2;
         `, [username, password]);
         delete user.password;
         return user;
@@ -36,10 +36,9 @@ async function getUserById(id) {
         const { rows: [user] } = await client.query(`
             SELECT *
             FROM users
-            WHERE id=$1
+            WHERE id=$1;
         `, [id]);
         delete user.password;
-        console.log(user);
         return user;
     } catch(error){
         throw error;
