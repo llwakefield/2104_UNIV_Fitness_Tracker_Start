@@ -18,10 +18,10 @@ describe('Database', () => {
   afterAll(async() => {
     await client.end();
   })
-  describe('Users', () => {
+  describe.only('Users', () => {
     let userToCreateAndUpdate, queriedUser;
     let userCredentials = {username: 'billybob', password: 'bobbybadboy'};
-    describe('createUser({ username, password })', () => {
+    describe.only('createUser({ username, password })', () => {
       beforeAll(async () => {
         userToCreateAndUpdate = await createUser(userCredentials);
         const {rows} = await client.query(`SELECT * FROM users WHERE username = $1`, [userCredentials.username]);
@@ -42,7 +42,7 @@ describe('Database', () => {
         expect(userToCreateAndUpdate.password).toBeFalsy();
       })
     })
-    describe('getUser({ username, password })', () => {
+    describe.only('getUser({ username, password })', () => {
       let verifiedUser;
       beforeAll(async () => {
         verifiedUser = await getUser(userCredentials);
@@ -57,7 +57,7 @@ describe('Database', () => {
         expect(verifiedUser.password).toBeFalsy();
       })
     })
-    describe('getUserById', () => {
+    describe.only('getUserById', () => {
       it('Gets a user based on the user Id', async () => {
         const user = await getUserById(userToCreateAndUpdate.id);
         expect(user).toBeTruthy();
