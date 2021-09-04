@@ -100,12 +100,12 @@ describe('Database', () => {
         expect(activity).toBeTruthy();
       })
     })
-    describe('getAllRoutines', () => {
+    describe.only('getAllRoutines', () => {
       let routine;
       beforeAll(async() => {
         [routine] = await getAllRoutines();
       })
-      it('selects and returns an array of all routines, includes their activities', async () => {
+      xit('selects and returns an array of all routines, includes their activities', async () => {
         expect(routine).toEqual(expect.objectContaining({
           id: expect.any(Number),
           creatorId: expect.any(Number),

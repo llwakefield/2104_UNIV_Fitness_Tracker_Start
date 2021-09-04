@@ -35,7 +35,6 @@ async function createActivity ({name, description}){
             VALUES($1, $2)
             RETURNING *;
         `, [lowerCaseName, description]);
-        console.log(activity);
         return activity;
     } catch(error){
         throw(error);

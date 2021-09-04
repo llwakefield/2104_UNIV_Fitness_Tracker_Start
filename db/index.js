@@ -2,7 +2,7 @@
 const client = require("./client");
 const { createUser, getUser, getUserById } = require("./users");
 const { getActivityById, getAllActivities, createActivity, updateActivity } = require("./activities");
-const { createRoutine, getRoutinesWithoutActivities, getRoutineById } = require("./routines");
+const { createRoutine, getRoutinesWithoutActivities, getRoutineById, getAllRoutines } = require("./routines");
 const { addActivityToRoutine } = require("./routine_activities");
 
 
@@ -19,5 +19,6 @@ module.exports = {
     addActivityToRoutine,
     getRoutineById,
     updateActivity,
+    getAllRoutines,
 }
 
