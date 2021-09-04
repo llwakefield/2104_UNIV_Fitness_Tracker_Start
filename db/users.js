@@ -10,12 +10,39 @@ async function createUser({username, password}){
             ON CONFLICT (username) DO NOTHING
             RETURNING *;
         `, [username, password]);
-        console.log(user);
+        delete user.password;
+        return user;
+    } catch(error){
+        throw(error)
+    }
+}
+
+async function getUser({username, password}){
+    try {
+        const { rows: [user] } = await client.query(`
+            SELECT *
+            FROM users
+            WHERE username=$1 and password=$2
+        `, [username, password]);
+        delete user.password;
+        return user;
+    } catch(error){
+        throw(error);
+    }
+}
+
+async function getUserById(id) {
+    try {
+        const { rows: [user] } = await client.query(`
+            SELECT *
+            FROM users
+            WHERE id=$1
+        `, [id]);
         delete user.password;
         console.log(user);
         return user;
     } catch(error){
-        throw(error)
+        throw error;
     }
 }
 
@@ -42,4 +69,6 @@ async function createUser({username, password}){
 
 module.exports = {
     createUser,
+    getUser,
+    getUserById,
 }

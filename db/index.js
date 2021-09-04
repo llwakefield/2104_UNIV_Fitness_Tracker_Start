@@ -1,10 +1,12 @@
 // require and re-export all files in this db directory (users, activities...)
 const client = require("./client");
-const { createUser } = require("./users");
+const { createUser, getUser, getUserById } = require("./users");
 
 
 
 module.exports = {
-    createUser
+    createUser,
+    getUser,
+    getUserById,
 }
 
