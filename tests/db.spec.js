@@ -18,10 +18,10 @@ describe('Database', () => {
   afterAll(async() => {
     await client.end();
   })
-  describe.only('Users', () => {
+  describe('Users', () => {
     let userToCreateAndUpdate, queriedUser;
     let userCredentials = {username: 'billybob', password: 'bobbybadboy'};
-    describe.only('createUser({ username, password })', () => {
+    describe('createUser({ username, password })', () => {
       beforeAll(async () => {
         userToCreateAndUpdate = await createUser(userCredentials);
         const {rows} = await client.query(`SELECT * FROM users WHERE username = $1`, [userCredentials.username]);
@@ -42,7 +42,7 @@ describe('Database', () => {
         expect(userToCreateAndUpdate.password).toBeFalsy();
       })
     })
-    describe.only('getUser({ username, password })', () => {
+    describe('getUser({ username, password })', () => {
       let verifiedUser;
       beforeAll(async () => {
         verifiedUser = await getUser(userCredentials);
@@ -57,7 +57,7 @@ describe('Database', () => {
         expect(verifiedUser.password).toBeFalsy();
       })
     })
-    describe.only('getUserById', () => {
+    describe('getUserById', () => {
       it('Gets a user based on the user Id', async () => {
         const user = await getUserById(userToCreateAndUpdate.id);
         expect(user).toBeTruthy();
@@ -65,8 +65,8 @@ describe('Database', () => {
       })
     })
   })
-  describe.only('Activities', () => {
-    describe.only('getAllActivities', () => {
+  describe('Activities', () => {
+    describe('getAllActivities', () => {
       it('selects and returns an array of all activities', async () => {
         const activities = await getAllActivities();
         const {rows: activitiesFromDatabase} = await client.query(`
@@ -75,7 +75,7 @@ describe('Database', () => {
         expect(activities).toEqual(activitiesFromDatabase);
       })
     })
-    describe.only('createActivity({ name, description })', () => {
+    describe('createActivity({ name, description })', () => {
       it('Creates and returns the new activity', async () => {
         const activityToCreate = { name: 'elliptical', description: 'using the elliptical machine' };
         const createdActivity = await createActivity(activityToCreate);
@@ -83,7 +83,7 @@ describe('Database', () => {
         expect(createdActivity.description).toBe(activityToCreate.description);
       })
     })
-    describe.only('updateActivity', () => {
+    describe('updateActivity', () => {
       it('Updates name and description of an activity without affecting the ID. Returns the updated Activity.', async () => {
         const [activityToUpdate] = await getAllActivities();
         activityToUpdate.name = 'standing barbell curl';
@@ -92,15 +92,15 @@ describe('Database', () => {
       })
     })
   })
-  describe.only('Routines', () => {
+  describe('Routines', () => {
     let routineToCreateAndUpdate;
-    describe.only('getActivityById', () => {
+    describe('getActivityById', () => {
       it('gets activities by their id', async () => {
         const activity = await getActivityById(1);
         expect(activity).toBeTruthy();
       })
     })
-    describe.only('getAllRoutines', () => {
+    describe('getAllRoutines', () => {
       let routine;
       beforeAll(async() => {
         [routine] = await getAllRoutines();
@@ -128,7 +128,7 @@ describe('Database', () => {
         }));
       })
     })
-    describe.only('getAllPublicRoutines', () => {
+    describe('getAllPublicRoutines', () => {
       let routine;
       beforeAll(async() => {
         [routine] = await getAllPublicRoutines();
@@ -157,7 +157,7 @@ describe('Database', () => {
         }));
       })
     })
-    describe.only('getAllRoutinesByUser', () => {
+    describe('getAllRoutinesByUser', () => {
       let routine, user;
       beforeAll(async() => {
         user = await getUserById(1); 
@@ -187,7 +187,7 @@ describe('Database', () => {
         }));
       })
     })
-    describe.only('getPublicRoutinesByUser', () => {
+    describe('getPublicRoutinesByUser', () => {
       let routine, user;
       beforeAll(async() => {
         user = await getUserById(1); 
@@ -248,7 +248,7 @@ describe('Database', () => {
         }));
       })
     })
-    describe.only('createRoutine', () => {
+    describe('createRoutine', () => {
       it('creates and returns the new routine', async () => {
         routineToCreateAndUpdate = await createRoutine({creatorId: 2, isPublic: true, name: 'BodyWeight Day', goal: 'Do workouts that can be done from home, no gym or weights required.'});
         const queriedRoutine = await getRoutineById(routineToCreateAndUpdate.id)
@@ -297,7 +297,7 @@ describe('Database', () => {
       })
     })
   })
-  describe.only('Routine Activities', () => {
+  describe('Routine Activities', () => {
     const routineActivityData = {
       routineId: 4,
       activityId: 8,
@@ -305,7 +305,7 @@ describe('Database', () => {
       duration: 10000 
     }
     let routineActivityToCreateAndUpdate;
-    describe.only('addActivityToRoutine({ routineId, activityId, count, duration })', () => {
+    describe('addActivityToRoutine({ routineId, activityId, count, duration })', () => {
       it('creates a new routine_activity, and return it', async () => {
         routineActivityToCreateAndUpdate = await addActivityToRoutine(routineActivityData);
         
