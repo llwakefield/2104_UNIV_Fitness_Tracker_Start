@@ -39,22 +39,47 @@ async function getRoutineActivityById(id) {
     } 
 }
 
-// async function updateRoutineActivity({id, count, duration}) {
-//     const setString = 
-
-//     try {
-//         const { rows: [routine] } = await client.query(`
-
-//         `)
-//     }
-// }
-
-async function destroyRoutineActivity({id}) {
+async function updateRoutineActivity({id, count, duration}) {
+    //  if both are true, then...; if one is true, then...; if the other is true, then...;
     try {
-        await client.query(`
+        if(count && duration) {
+            const { rows: [routine] } = await client.query(`
+                UPDATE routine_activities
+                SET count=$2, duration=$3
+                WHERE id=$1
+                RETURNING *;
+            `, [id, count, duration]);
+            return routine;
+        } else if(count) {
+            const { rows: [routine] } = await client.query(`
+                UPDATE routine_activities
+                SET count=$2
+                WHERE id=$1
+                RETURNING *;
+            `, [id, count]);
+            return routine;
+        } else if(duration) {
+            const { rows: [routine] } = await client.query(`
+            UPDATE routine_activities
+            SET duration=$2
+            WHERE id=$1
+            RETURNING *;
+            `, [id, duration]);
+            return routine;
+        }
+    } catch(error) {
+        throw(error);
+    }
+}
+
+async function destroyRoutineActivity(id) {
+    try {
+        const {rows: [routine]} = await client.query(`
             DELETE FROM routine_activities
-            WHERE id=$1;
+            WHERE id=$1
+            RETURNING *;
         `, [id]);
+        return routine;
     } catch(error) {
         throw(error);
     }
@@ -67,4 +92,5 @@ module.exports = {
     getRoutineActivitiesByRoutine,
     getRoutineActivityById,
     destroyRoutineActivity,
+    updateRoutineActivity,
 }

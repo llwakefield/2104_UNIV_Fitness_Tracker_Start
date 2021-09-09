@@ -22,6 +22,7 @@ const {
   getRoutineActivitiesByRoutine,
   getRoutineActivityById,
   destroyRoutineActivity,
+  updateRoutineActivity,
 } = require("./");
 
 async function dropTables() {
