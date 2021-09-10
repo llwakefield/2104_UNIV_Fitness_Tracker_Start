@@ -3,26 +3,11 @@
 const client = require("./client");
 const {
   createUser,
-  getUser,
-  getActivityById,
   getAllActivities,
   createActivity,
   createRoutine,
   getRoutinesWithoutActivities,
   addActivityToRoutine,
-  getRoutineById,
-  updateActivity,
-  getAllRoutines,
-  getAllPublicRoutines,
-  getAllRoutinesByUser,
-  getPublicRoutinesByUser,
-  getPublicRoutinesByActivity,
-  updateRoutine,
-  destroyRoutine,
-  getRoutineActivitiesByRoutine,
-  getRoutineActivityById,
-  destroyRoutineActivity,
-  updateRoutineActivity,
 } = require("./");
 
 async function dropTables() {
