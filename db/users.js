@@ -45,6 +45,19 @@ async function getUserById(id) {
     }
 }
 
+async function getUserByUserName(username) {
+    try {
+        const { rows: [user] } = await client.query(`
+            SELECT *
+            FROM users
+            WHERE username=$1;
+        `, [username]);
+        return user;
+    } catch(error) {
+        throw(error)
+    }
+}
+
 // const SALT_COUNT = 10;
 
 // bcrypt.hash(password, SALT_COUNT, function(err, hashedPassword) {
@@ -70,4 +83,5 @@ module.exports = {
     createUser,
     getUser,
     getUserById,
+    getUserByUserName
 }
