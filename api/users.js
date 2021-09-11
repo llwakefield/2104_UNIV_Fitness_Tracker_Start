@@ -1,37 +1,44 @@
 const express = require("express");
 const { createUser, getUserByUserName, getUser } = require("../db");
 const usersRouter = express.Router();
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
+const { JWT_SECRET } = process.env;
 
 usersRouter.post("/register", async (req, res, next) => {
   const { username, password } = req.body;
 
   if (!username || !password) {
     next({
+      name: "MissingCredentialError",
       message: "Username and password are required fields.",
     });
   }
   if (password.length < 8) {
+    res.status(401);
     next({
+      name: "PasswordLengthError",
       message: "Password must be at least 8 characters long.",
     });
   }
   try {
     const _user = await getUserByUserName(username);
+    console.log(_user);
     if (_user) {
-      next({
+        // res.status(401).send({error: "error"});
+        next({
+        name: "ExistingUsernameError",
         message: "Username already exists. Please try again.",
       });
+    } else {
+        const user = await createUser(req.body);
+        res.send({ user: user, message: "You have successfully registered" });
     }
-    const user = await createUser(req.body);
-    console.log(user);
-    res.send({ user, message: "You have successfully registered" });
-  } catch (message) {
-    next(message);
+  } catch (error) {
+    next(error);
   }
 });
 
-usersRouter.post("/login", async(req, res, next) => {
+usersRouter.post("/login", async (req, res, next) => {
     const { username, password } = req.body;
     if (!username || !password) {
         next({
@@ -39,16 +46,19 @@ usersRouter.post("/login", async(req, res, next) => {
         });
       }
     try {
-        const user = await getUser(req.body)
-        if(user && user.password == password) {
-            const token = jwt.sign(user, process.env.JWT_SECRET)
+        const user = await getUser(req.body);
+        if(user) {
+            const token = jwt.sign({id: user.id, username: username}, JWT_SECRET);
             res.send({
-            user, message: "You have successfully logged in.", token
+            message: "you're loggin in!", token: token
+            });
+        } else {
+            next({
+                message: "Username or password is incorrect"
             })
-        } 
-    //    Still in progress
-    } catch(message) {
-        next(message);
+        }
+    } catch(error) {
+        next(error);
     }
 })
 

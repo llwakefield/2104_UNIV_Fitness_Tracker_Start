@@ -51,7 +51,7 @@ describe('API', () => {
       it('Requires username and password. Requires all passwords to be at least 8 characters long.', () => {
         expect(newUser.password.length).toBeGreaterThan(7);
       });
-      it('EXTRA CREDIT: Hashes password before saving user to DB.', async () => {
+      xit('EXTRA CREDIT: Hashes password before saving user to DB.', async () => {
         const {rows: [queriedUser]} = await client.query(`
           SELECT *
           FROM users
@@ -107,7 +107,7 @@ describe('API', () => {
       });
     });
     describe('GET /users/:username/routines', () => {
-      it('Gets a list of public routines for a particular user.', async () => {
+      xit('Gets a list of public routines for a particular user.', async () => {
         const userId = 2;
         const userWithRoutines = await getUserById(userId);
         const {data: routines} = await axios.get(`${API_URL}/api/users/${userWithRoutines.username}/routines`);
@@ -120,7 +120,7 @@ describe('API', () => {
   describe('Activities', () => {
     let activityToCreateAndUpdate = { name: 'Bicep Curls', description: 'They hurt, but you will thank you later' };
     describe('GET /activities', () => {
-      it('Just returns a list of all activities in the database', async () => {
+      xit('Just returns a list of all activities in the database', async () => {
         const curls = { name: 'curls', description: '4 sets of 15.' };
         const createdActivity = await createActivity(curls);
         const {data: activities} = await axios.get(`${API_URL}/api/activities`);
@@ -134,7 +134,7 @@ describe('API', () => {
       });
     });
     describe('POST /activities (*)', () => {
-      it('Creates a new activity', async () => {
+      xit('Creates a new activity', async () => {
         const {data: respondedActivity} = await axios.post(`${API_URL}/api/activities`, activityToCreateAndUpdate, { headers: {'Authorization': `Bearer ${token}`} });
         expect(respondedActivity.name).toEqual(activityToCreateAndUpdate.name);
         expect(respondedActivity.description).toEqual(activityToCreateAndUpdate.description);
@@ -142,7 +142,7 @@ describe('API', () => {
       });
     });
     describe('PATCH /activities/:activityId (*)', () => {
-      it('Anyone can update an activity (yes, this could lead to long term problems a la wikipedia)', async () => {
+      xit('Anyone can update an activity (yes, this could lead to long term problems a la wikipedia)', async () => {
         const newActivityData = { name: 'Double Bicep Curls', description: 'They hurt EVEN MORE, but you will thank you later' }
         const {data: respondedActivity} = await axios.patch(`${API_URL}/api/activities/${activityToCreateAndUpdate.id}`, newActivityData, { headers: {'Authorization': `Bearer ${token}`} });
         expect(respondedActivity.name).toEqual(newActivityData.name);
@@ -150,7 +150,7 @@ describe('API', () => {
       });
     });
     describe('GET /activities/:activityId/routines', () => {
-      it('Get a list of all public routines which feature that activity', async () => {
+      xit('Get a list of all public routines which feature that activity', async () => {
         const [testRoutine] = await getAllPublicRoutines();
         const [testActivity] = testRoutine.activities;
         const {data: routines} = await axios.get(`${API_URL}/api/activities/${testActivity.id}/routines`);
@@ -164,7 +164,7 @@ describe('API', () => {
     let routineToFail = {isPublic: false, name: 'Elliptical Day 2', goal: 'Work on that Elliptical... again!'};
     const newRoutineData = {isPublic: false, name: 'Elliptical Day Private', goal: 'Work on that Elliptical, yet again!'}
     describe('GET /routines', () => {
-      it('Returns a list of public routines, includes the activities with them', async () => {
+      xit('Returns a list of public routines, includes the activities with them', async () => {
         const publicRoutinesFromDB = await getAllPublicRoutines();
         const {data: publicRoutinesFromAPI} = await axios.get(`${API_URL}/api/routines`);
         expect(publicRoutinesFromAPI).toEqual(publicRoutinesFromDB);
@@ -172,7 +172,7 @@ describe('API', () => {
     });
     
     describe('POST /routines (*)', () => {
-      it('Creates a new routine, with the creatorId matching the logged in user', async () => {
+      xit('Creates a new routine, with the creatorId matching the logged in user', async () => {
         const {data: respondedRoutine} = await axios.post(`${API_URL}/api/routines`, routineToCreateAndUpdate, { headers: {'Authorization': `Bearer ${token}`} });
         
         expect(respondedRoutine.name).toEqual(routineToCreateAndUpdate.name);
@@ -193,7 +193,7 @@ describe('API', () => {
       });
     });
     describe('PATCH /routines/:routineId (**)', () => {
-      it('Updates a routine, notably changing public/private, the name, or the goal', async () => {
+      xit('Updates a routine, notably changing public/private, the name, or the goal', async () => {
         const {data: respondedRoutine} = await axios.patch(`${API_URL}/api/routines/${routineToCreateAndUpdate.id}`, newRoutineData, { headers: {'Authorization': `Bearer ${token}`} });
         expect(respondedRoutine.name).toEqual(newRoutineData.name);
         expect(respondedRoutine.goal).toEqual(newRoutineData.goal);
@@ -201,7 +201,7 @@ describe('API', () => {
       });
     });
     describe('DELETE /routines/:routineId (**)', () => {
-      it('Hard deletes a routine. Makes sure to delete all the routineActivities whose routine is the one being deleted.', async () => {
+      xit('Hard deletes a routine. Makes sure to delete all the routineActivities whose routine is the one being deleted.', async () => {
         const {data: deletedRoutine} = await axios.delete(`${API_URL}/api/routines/${routineToCreateAndUpdate.id}`, { headers: {'Authorization': `Bearer ${token}`} });
         const shouldBeDeleted = await getRoutineById(deletedRoutine.id);
         expect(deletedRoutine.id).toBe(routineToCreateAndUpdate.id);
@@ -212,14 +212,14 @@ describe('API', () => {
     });
     describe('POST /routines/:routineId/activities', () => {
       let newRoutine
-      it('Attaches a single activity to a routine.', async () => {
+      xit('Attaches a single activity to a routine.', async () => {
         newRoutine = await createRoutine({creatorId: registeredUser.id, name: 'Pull Ups', goal: '10 pull ups'})
         const {data: respondedRoutineActivity} = await axios.post(`${API_URL}/api/routines/${newRoutine.id}/activities`, {routineId: newRoutine.id, ...routineActivityToCreateAndUpdate}, { headers: {'Authorization': `Bearer ${token}`} });
         expect(respondedRoutineActivity.routineId).toBe(newRoutine.id);
         expect(respondedRoutineActivity.activityId).toBe(routineActivityToCreateAndUpdate.activityId);
         routineActivityToCreateAndUpdate = respondedRoutineActivity;
       });
-      it('Prevents duplication on (routineId, activityId) pair.', async () => {
+      xit('Prevents duplication on (routineId, activityId) pair.', async () => {
         let duplicateIds, duplicateIdsResp;
         try {
           duplicateIds = await axios.post(`${API_URL}/api/routines/${newRoutine.id}/activities`, routineActivityToCreateAndUpdate, { headers: {'Authorization': `Bearer ${token}`} });
@@ -234,13 +234,13 @@ describe('API', () => {
   describe('routine_activities', () => {
     let newRoutineActivityData = {routineId: 3, activityId: 8, count: 25, duration: 200};
     describe('PATCH /routine_activities/:routineActivityId (**)', () => {
-      it('Updates the count or duration on the routine activity', async () => {
+      xit('Updates the count or duration on the routine activity', async () => {
         const {data: respondedRoutineActivity} = await axios.patch(`${API_URL}/api/routine_activities/${routineActivityToCreateAndUpdate.id}`, newRoutineActivityData, { headers: {'Authorization': `Bearer ${token}`} });
         expect(respondedRoutineActivity.count).toEqual(newRoutineActivityData.count);
         expect(respondedRoutineActivity.duration).toEqual(newRoutineActivityData.duration);
         routineActivityToCreateAndUpdate = respondedRoutineActivity;
       });
-      it('Logged in user should be the owner of the modified object.', async () => {
+      xit('Logged in user should be the owner of the modified object.', async () => {
         let respondedRoutineActivity, errRespondedRoutineActivity;
         try {
           respondedRoutineActivity = await axios.patch(`${API_URL}/api/routine_activities/${4}`, newRoutineActivityData, { headers: {'Authorization': `Bearer ${token}`} });
@@ -252,7 +252,7 @@ describe('API', () => {
       });
     });
     describe('DELETE /routine_activities/:routineActivityId (**)', () => {
-      it('Removes an activity from a routine, uses hard delete', async () => {
+      xit('Removes an activity from a routine, uses hard delete', async () => {
         const {data: deletedRoutineActivity} = await axios.delete(`${API_URL}/api/routine_activities/${routineActivityToCreateAndUpdate.id}`, { headers: {'Authorization': `Bearer ${token}`} });
         const shouldBeDeleted = await getRoutineActivityById(deletedRoutineActivity.id);
         expect(deletedRoutineActivity.id).toBe(routineActivityToCreateAndUpdate.id);
@@ -260,7 +260,7 @@ describe('API', () => {
         expect(deletedRoutineActivity.duration).toBe(routineActivityToCreateAndUpdate.duration);
         expect(shouldBeDeleted).toBeFalsy();
       });
-      it('Logged in user should be the owner of the modified object.', async () => {
+      xit('Logged in user should be the owner of the modified object.', async () => {
         let respondedRoutineActivity, errRespondedRoutineActivity;
         try {
           respondedRoutineActivity = await axios.delete(`${API_URL}/api/routine_activities/${4}`, { headers: {'Authorization': `Bearer ${token}`} });

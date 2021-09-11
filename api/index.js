@@ -10,5 +10,9 @@ apiRouter.get('/health', function (req, res, next) {
 // apiRouter.use('/activities', require("./activities"))
 apiRouter.use('/users', require('./users'))
 
+apiRouter.use((error, req, res, next) => {
+    next(error);
+  });
+
 // export the api router
 module.exports = apiRouter;

@@ -20,11 +20,12 @@ async function createUser({username, password}){
 async function getUser({username, password}){
     try {
         const { rows: [user] } = await client.query(`
-            SELECT *
+            SELECT id, username
             FROM users
-            WHERE username=$1 and password=$2;
+            WHERE username=$1 AND password=$2;
         `, [username, password]);
-        delete user.password;
+        // delete user.password;
+        console.log(user)
         return user;
     } catch(error){
         throw(error);
