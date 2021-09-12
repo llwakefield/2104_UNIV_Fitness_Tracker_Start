@@ -1,5 +1,5 @@
 const express = require("express");
-const { getAllActivities, createActivity, getUserById } = require("../db");
+const { getAllActivities, createActivity, getUserById, updateActivity, getPublicRoutinesByActivity } = require("../db");
 const activitiesRouter = express.Router();
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = process.env;
@@ -33,7 +33,6 @@ activitiesRouter.post("/", async (req, res, next) => {
 
         try {
             const { id } = jwt.verify(token, JWT_SECRET);
-            console.log(id);
             if(id) {
             const user = await getUserById(id);
             if(user) {
@@ -44,6 +43,45 @@ activitiesRouter.post("/", async (req, res, next) => {
             next(error)
         }
     }
+})
+
+activitiesRouter.patch("/:activityId", async (req, res, next) => {
+    const { activityId } = req.params;
+    const { name, description } = req.body;
+    const reqObj = {id: activityId, name: name, description: description}
+    const prefix = "Bearer ";
+    const auth = req.header("Authorization");
+
+    if (!auth) {
+      next({
+          message: "You must be logged in to continue"
+      });
+    } else if (auth.startsWith(prefix)) {
+      const token = auth.slice(prefix.length);
+      try {
+        const { id } = jwt.verify(token, JWT_SECRET);
+        if(id) {
+        const user = await getUserById(id);
+        if(user) {
+            const activity = await updateActivity(reqObj);
+            res.send(activity);
+        }}
+    } catch(error) {
+        next(error)
+    }
+}
+})
+
+activitiesRouter.get("/:activityId/routines", async (req, res, next) => {
+    const { activityId } = req.params;
+    console.log(activityId);
+    try {
+        const routines = await getPublicRoutinesByActivity({id: activityId});
+        res.send(routines);
+    } catch(error) {
+        next(error);
+    }
+
 })
 
 module.exports = activitiesRouter

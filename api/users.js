@@ -84,7 +84,6 @@ usersRouter.get("/me", async (req, res, next) => {
   
         try {
         const { id } = jwt.verify(token, JWT_SECRET);
-        console.log(id);
         if(id) {
         const user = await getUserById(id);
         res.send(user);
@@ -100,10 +99,8 @@ usersRouter.get("/me", async (req, res, next) => {
 // the token matches the requested username
 usersRouter.get("/:username/routines", async (req, res, next) => {
     const { username } = req.params;
-    console.log(username);
     try {
         const routines = await getPublicRoutinesByUser(req.params);
-        console.log(routines);
         res.send(routines);
     } catch(error) {
         next(error)
