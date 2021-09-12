@@ -120,7 +120,7 @@ describe('API', () => {
   describe('Activities', () => {
     let activityToCreateAndUpdate = { name: 'Bicep Curls', description: 'They hurt, but you will thank you later' };
     describe('GET /activities', () => {
-      xit('Just returns a list of all activities in the database', async () => {
+      it('Just returns a list of all activities in the database', async () => {
         const curls = { name: 'curls', description: '4 sets of 15.' };
         const createdActivity = await createActivity(curls);
         const {data: activities} = await axios.get(`${API_URL}/api/activities`);
@@ -134,7 +134,7 @@ describe('API', () => {
       });
     });
     describe('POST /activities (*)', () => {
-      xit('Creates a new activity', async () => {
+      it('Creates a new activity', async () => {
         const {data: respondedActivity} = await axios.post(`${API_URL}/api/activities`, activityToCreateAndUpdate, { headers: {'Authorization': `Bearer ${token}`} });
         expect(respondedActivity.name).toEqual(activityToCreateAndUpdate.name);
         expect(respondedActivity.description).toEqual(activityToCreateAndUpdate.description);

@@ -28,13 +28,13 @@ async function getAllActivities(){
 }
 
 async function createActivity ({name, description}){
-    const lowerCaseName = name.toLowerCase();
+    // const lowerCaseName = name.toLowerCase();
     try{
         const { rows: [activity] } = await client.query(`
             INSERT INTO activities(name, description)
             VALUES($1, $2)
             RETURNING *;
-        `, [lowerCaseName, description]);
+        `, [name, description]);
         return activity;
     } catch(error){
         throw(error);
@@ -42,14 +42,14 @@ async function createActivity ({name, description}){
 }
 
 async function updateActivity({id, name, description}) {
-    const lowerCaseName = name.toLowerCase();
+    // const lowerCaseName = name.toLowerCase();
     try {
         const {rows: [activity] } = await client.query(`
             UPDATE activities
             SET name=$2, description=$3
             WHERE id=$1
             RETURNING *;
-        `, [id, lowerCaseName, description]);
+        `, [id, name, description]);
         return activity;
 
     } catch(error){

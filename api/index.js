@@ -7,8 +7,8 @@ apiRouter.get('/health', function (req, res, next) {
     res.send({message:'All is well'})
   });
 
-// apiRouter.use('/activities', require("./activities"))
-apiRouter.use('/users', require('./users'))
+apiRouter.use('/users', require('./users'));
+apiRouter.use('/activities', require('./activities'));
 
 apiRouter.use((error, req, res, next) => {
     next(error);
