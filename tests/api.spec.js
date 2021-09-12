@@ -193,7 +193,7 @@ describe('API', () => {
       });
     });
     describe('PATCH /routines/:routineId (**)', () => {
-      xit('Updates a routine, notably changing public/private, the name, or the goal', async () => {
+      it('Updates a routine, notably changing public/private, the name, or the goal', async () => {
         const {data: respondedRoutine} = await axios.patch(`${API_URL}/api/routines/${routineToCreateAndUpdate.id}`, newRoutineData, { headers: {'Authorization': `Bearer ${token}`} });
         expect(respondedRoutine.name).toEqual(newRoutineData.name);
         expect(respondedRoutine.goal).toEqual(newRoutineData.goal);
