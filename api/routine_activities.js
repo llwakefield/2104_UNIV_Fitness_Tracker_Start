@@ -16,7 +16,7 @@ routineActivitiesRouter.patch("/:routineActivityId", async (req, res, next) => {
             const routineActivity = await updateRoutineActivity({id: routineId, count, duration});
             res.send(routineActivity);
         } else {
-            next({message: "You can only update routines that you created."});
+            res.status(401).send({message: "You can only update routines that you created."});
         }
     } catch(error) {
         next(error)
@@ -39,7 +39,7 @@ routineActivitiesRouter.delete("/:routineActivityId", async (req, res, next) => 
             console.log(routineActivity);
             res.send(routineActivity);
         } else {
-            next({message: "You can only remove activities from routines that you created."});
+            res.status(401).send({message: "You can only remove activities from routines that you created."});
         }
     } catch(error) {
         next(error)
