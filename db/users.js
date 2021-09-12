@@ -1,63 +1,97 @@
 // inside of createUser({ username, password})
-const bcrypt = require('bcrypt');
-const client = require('./client')
+const bcrypt = require("bcrypt");
+const client = require("./client");
 
-async function createUser({username, password}){
-    try {
-        const { rows: [user] } = await client.query(`
+async function createUser({ username, password }) {
+  try {
+    const {
+      rows: [user],
+    } = await client.query(
+      `
             INSERT INTO users(username, password)
             VALUES ($1, $2)
             ON CONFLICT (username) DO NOTHING
             RETURNING *;
-        `, [username, password]);
-        delete user.password;
-        return user;
-    } catch(error){
-        throw(error)
-    }
+        `,
+      [username, password]
+    );
+    delete user.password;
+    return user;
+  } catch (error) {
+    throw error;
+  }
 }
 
-async function getUser({username, password}){
-    try {
-        const { rows: [user] } = await client.query(`
+async function getUser({ username, password }) {
+  try {
+    const {
+      rows: [user],
+    } = await client.query(
+      `
             SELECT id, username
             FROM users
             WHERE username=$1 AND password=$2;
-        `, [username, password]);
-        // delete user.password;
-        console.log(user)
-        return user;
-    } catch(error){
-        throw(error);
-    }
+        `,
+      [username, password]
+    );
+    // delete user.password;
+    // console.log(user);
+    return user;
+  } catch (error) {
+    throw error;
+  }
 }
 
 async function getUserById(id) {
-    try {
-        const { rows: [user] } = await client.query(`
+  try {
+    const {
+      rows: [user],
+    } = await client.query(
+      `
             SELECT *
             FROM users
             WHERE id=$1;
-        `, [id]);
-        delete user.password;
-        return user;
-    } catch(error){
-        throw error;
-    }
+        `,
+      [id]
+    );
+    delete user.password;
+    return user;
+  } catch (error) {
+    throw error;
+  }
 }
 
 async function getUserByUserName(username) {
-    try {
-        const { rows: [user] } = await client.query(`
-            SELECT *
+  try {
+    const
+      {rows: [user]}
+     = await client.query(
+      `
+            SELECT id, username
             FROM users
             WHERE username=$1;
-        `, [username]);
-        return user;
-    } catch(error) {
-        throw(error)
-    }
+        `,
+      [username]
+    );
+    return user;
+  } catch (error) {
+    throw error;
+  }
 }
+
+// function isLoggedIn() {
+//   const prefix = "Bearer ";
+//   const auth = req.header("Authorization");
+
+//   if (!auth) {
+//     next();
+//   } else if (auth.startsWith(prefix)) {
+//     const token = auth.slice(prefix.length);
+
+//     const { id } = jwt.verify(token, JWT_SECRET);
+//     return id;
+//   }
+// }
 
 // const SALT_COUNT = 10;
 
@@ -81,8 +115,9 @@ async function getUserByUserName(username) {
 // });
 
 module.exports = {
-    createUser,
-    getUser,
-    getUserById,
-    getUserByUserName
-}
+  createUser,
+  getUser,
+  getUserById,
+  getUserByUserName,
+//   isLoggedIn,
+};
