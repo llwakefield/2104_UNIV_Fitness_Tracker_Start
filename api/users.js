@@ -4,6 +4,7 @@ const {
   getUserByUserName,
   getUser,
   getUserById,
+  getPublicRoutinesByUser,
 } = require("../db");
 const usersRouter = express.Router();
 const jwt = require("jsonwebtoken");
@@ -93,6 +94,19 @@ usersRouter.get("/me", async (req, res, next) => {
         } catch (error) {
             next(error);
         }
+    }
+});
+// API documentation says to check for logged-in user and to also return private routines if
+// the token matches the requested username
+usersRouter.get("/:username/routines", async (req, res, next) => {
+    const { username } = req.params;
+    console.log(username);
+    try {
+        const routines = await getPublicRoutinesByUser(req.params);
+        console.log(routines);
+        res.send(routines);
+    } catch(error) {
+        next(error)
     }
 });
 
