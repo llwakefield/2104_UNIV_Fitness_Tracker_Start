@@ -201,7 +201,7 @@ describe('API', () => {
       });
     });
     describe('DELETE /routines/:routineId (**)', () => {
-      xit('Hard deletes a routine. Makes sure to delete all the routineActivities whose routine is the one being deleted.', async () => {
+      it('Hard deletes a routine. Makes sure to delete all the routineActivities whose routine is the one being deleted.', async () => {
         const {data: deletedRoutine} = await axios.delete(`${API_URL}/api/routines/${routineToCreateAndUpdate.id}`, { headers: {'Authorization': `Bearer ${token}`} });
         const shouldBeDeleted = await getRoutineById(deletedRoutine.id);
         expect(deletedRoutine.id).toBe(routineToCreateAndUpdate.id);
@@ -212,14 +212,14 @@ describe('API', () => {
     });
     describe('POST /routines/:routineId/activities', () => {
       let newRoutine
-      xit('Attaches a single activity to a routine.', async () => {
+      it('Attaches a single activity to a routine.', async () => {
         newRoutine = await createRoutine({creatorId: registeredUser.id, name: 'Pull Ups', goal: '10 pull ups'})
         const {data: respondedRoutineActivity} = await axios.post(`${API_URL}/api/routines/${newRoutine.id}/activities`, {routineId: newRoutine.id, ...routineActivityToCreateAndUpdate}, { headers: {'Authorization': `Bearer ${token}`} });
         expect(respondedRoutineActivity.routineId).toBe(newRoutine.id);
         expect(respondedRoutineActivity.activityId).toBe(routineActivityToCreateAndUpdate.activityId);
         routineActivityToCreateAndUpdate = respondedRoutineActivity;
       });
-      xit('Prevents duplication on (routineId, activityId) pair.', async () => {
+      it('Prevents duplication on (routineId, activityId) pair.', async () => {
         let duplicateIds, duplicateIdsResp;
         try {
           duplicateIds = await axios.post(`${API_URL}/api/routines/${newRoutine.id}/activities`, routineActivityToCreateAndUpdate, { headers: {'Authorization': `Bearer ${token}`} });
