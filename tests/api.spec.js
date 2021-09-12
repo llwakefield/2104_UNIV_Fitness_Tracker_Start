@@ -234,13 +234,13 @@ describe('API', () => {
   describe('routine_activities', () => {
     let newRoutineActivityData = {routineId: 3, activityId: 8, count: 25, duration: 200};
     describe('PATCH /routine_activities/:routineActivityId (**)', () => {
-      xit('Updates the count or duration on the routine activity', async () => {
+      it('Updates the count or duration on the routine activity', async () => {
         const {data: respondedRoutineActivity} = await axios.patch(`${API_URL}/api/routine_activities/${routineActivityToCreateAndUpdate.id}`, newRoutineActivityData, { headers: {'Authorization': `Bearer ${token}`} });
         expect(respondedRoutineActivity.count).toEqual(newRoutineActivityData.count);
         expect(respondedRoutineActivity.duration).toEqual(newRoutineActivityData.duration);
         routineActivityToCreateAndUpdate = respondedRoutineActivity;
       });
-      xit('Logged in user should be the owner of the modified object.', async () => {
+      it('Logged in user should be the owner of the modified object.', async () => {
         let respondedRoutineActivity, errRespondedRoutineActivity;
         try {
           respondedRoutineActivity = await axios.patch(`${API_URL}/api/routine_activities/${4}`, newRoutineActivityData, { headers: {'Authorization': `Bearer ${token}`} });
@@ -252,7 +252,7 @@ describe('API', () => {
       });
     });
     describe('DELETE /routine_activities/:routineActivityId (**)', () => {
-      xit('Removes an activity from a routine, uses hard delete', async () => {
+      it('Removes an activity from a routine, uses hard delete', async () => {
         const {data: deletedRoutineActivity} = await axios.delete(`${API_URL}/api/routine_activities/${routineActivityToCreateAndUpdate.id}`, { headers: {'Authorization': `Bearer ${token}`} });
         const shouldBeDeleted = await getRoutineActivityById(deletedRoutineActivity.id);
         expect(deletedRoutineActivity.id).toBe(routineActivityToCreateAndUpdate.id);
@@ -260,7 +260,7 @@ describe('API', () => {
         expect(deletedRoutineActivity.duration).toBe(routineActivityToCreateAndUpdate.duration);
         expect(shouldBeDeleted).toBeFalsy();
       });
-      xit('Logged in user should be the owner of the modified object.', async () => {
+      it('Logged in user should be the owner of the modified object.', async () => {
         let respondedRoutineActivity, errRespondedRoutineActivity;
         try {
           respondedRoutineActivity = await axios.delete(`${API_URL}/api/routine_activities/${4}`, { headers: {'Authorization': `Bearer ${token}`} });
