@@ -164,7 +164,7 @@ describe('API', () => {
     let routineToFail = {isPublic: false, name: 'Elliptical Day 2', goal: 'Work on that Elliptical... again!'};
     const newRoutineData = {isPublic: false, name: 'Elliptical Day Private', goal: 'Work on that Elliptical, yet again!'}
     describe('GET /routines', () => {
-      xit('Returns a list of public routines, includes the activities with them', async () => {
+      it('Returns a list of public routines, includes the activities with them', async () => {
         const publicRoutinesFromDB = await getAllPublicRoutines();
         const {data: publicRoutinesFromAPI} = await axios.get(`${API_URL}/api/routines`);
         expect(publicRoutinesFromAPI).toEqual(publicRoutinesFromDB);
@@ -172,7 +172,7 @@ describe('API', () => {
     });
     
     describe('POST /routines (*)', () => {
-      xit('Creates a new routine, with the creatorId matching the logged in user', async () => {
+      it('Creates a new routine, with the creatorId matching the logged in user', async () => {
         const {data: respondedRoutine} = await axios.post(`${API_URL}/api/routines`, routineToCreateAndUpdate, { headers: {'Authorization': `Bearer ${token}`} });
         
         expect(respondedRoutine.name).toEqual(routineToCreateAndUpdate.name);

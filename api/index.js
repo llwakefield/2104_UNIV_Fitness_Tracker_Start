@@ -9,6 +9,7 @@ apiRouter.get('/health', function (req, res, next) {
 
 apiRouter.use('/users', require('./users'));
 apiRouter.use('/activities', require('./activities'));
+apiRouter.use('/routines', require('./routines'));
 
 apiRouter.use((error, req, res, next) => {
     next(error);
