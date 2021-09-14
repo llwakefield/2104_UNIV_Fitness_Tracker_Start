@@ -1,13 +1,14 @@
 // create the express server here
 const express = require('express')
 const cors = require('cors')
-const server = express();
 const morgan = require("morgan");
-const { PORT = 3000 } = process.env;
 const bodyParser = require("body-parser");
 require("dotenv").config();
-
 const { client } = require("./db");
+
+const server = express();
+
+const { PORT = 3000 } = process.env;
 
 server.use(morgan("dev"));
 
